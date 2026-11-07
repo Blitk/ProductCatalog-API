@@ -31,6 +31,9 @@ public class Product {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+    
     public Product() {
     }
 
@@ -43,6 +46,10 @@ public class Product {
         return id;
     }
 
+    public String getImageUrl(){
+        return imageUrl();
+    }
+    
     public String getName() {
         return name;
     }
@@ -86,4 +93,12 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+
+    public void setImageUrl(String imageUrl) {
+
+        this.imageUrl = imageUrl;
+
+    }
+    
 }
