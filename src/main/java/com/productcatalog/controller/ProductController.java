@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 import java.util.List;
 
 @RestController
@@ -25,6 +26,28 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @PostMapping(
+        value = "/{id}/image",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<ProductResponseDTO> uploadImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) {
+
+        return ResponseEntity.ok(
+                productService.uploadImage(id, file)
+        );
+    }
+
+    @DeleteMapping("/{id}/image")
+    public ResponseEntity<ProductResponseDTO> deleteImage(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                productService.deleteImage(id)
+        );
+    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponseDTO create(
