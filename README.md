@@ -41,6 +41,7 @@ O objetivo é desenvolver uma API organizada, testável e de fácil execução, 
 * Filtro por categoria.
 * Filtros combinados por nome, categoria, preço e estoque.
 * Paginação e ordenação dos resultados.
+* Upload de imagem.
 
 *Categorias*
 
@@ -75,6 +76,7 @@ com.productcatalog
 │
 ├── service/
 │   ├── ProductService.java
+│   ├── ProductImageService.java
 │   └── CategoryService.java
 │
 ├── repository/
@@ -98,6 +100,7 @@ com.productcatalog
 │   ├── ResourceNotFoundException.java
 │   ├── BusinessException.java
 │   ├── InvalidFilterException.java
+│   ├── InvalidImageException.java
 │   └── GlobalExceptionHandler.java
 │
 └── ProductCatalogApplication.java
@@ -127,6 +130,7 @@ price	- BigDecimal
 stockQuantity	- Integer
 category	- Category
 createdAt	- LocalDateTime
+imageUrl - String
 ```
 
 Um produto pertence a uma categoria por meio de um relacionamento *Many-to-One*.
@@ -270,6 +274,13 @@ GET	/api/categories/{id}	Buscar categoria por ID
 PUT	/api/categories/{id}	Atualizar categoria
 DELETE	/api/categories/{id}	Excluir categoria
 ```
+*Imagens*
+```
+POST /api/products/{id}/image Enviar imagem
+DELETE /api/products/{id}/image Remover imagem
+GET /api/products/{id} Consultar produto e imagem
+```
+
 ⸻
 
 ## Exemplos de requisições
