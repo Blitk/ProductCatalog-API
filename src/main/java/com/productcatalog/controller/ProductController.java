@@ -8,7 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Sort;
 import jakarta.validation.Valid;
-
+import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,4 +79,28 @@ public class ProductController {
          return productService.findByCategory(categoryId, pageable);
         
     }
+
+    
+    @GetMapping("/filter")
+    public Page<ProductResponseDTO> filter(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Integer minStock,
+            @RequestParam(required = false) Integer maxStock,
+            @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+
+        return productService.filter(
+                name,
+                categoryId,
+                minPrice,
+                maxPrice,
+                minStock,
+                maxStock,
+                pageable
+        );
+   }
+
+    
 }
