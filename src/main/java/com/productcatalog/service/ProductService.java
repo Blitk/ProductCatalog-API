@@ -17,17 +17,63 @@ import com.productcatalog.exception.InvalidFilterException;
 @Service
 public class ProductService {
 
+	private final ProductImageService productImageService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
     public ProductService(
             ProductRepository productRepository,
+		    ProductImageService productImageService,
             CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+		this.productImageService = productImageService;
+
     }
 
-    
+	@Transactional
+    public ProductResponseDTO uploadImage(Long productId, MultipartFile file) {
+
+        Product product = getProduct(productId);
+
+        String oldImageUrl = product.getImageUrl();
+
+        String newImageUrl = productImageService.store(file);
+
+        product.setImageUrl(newImageUrl);
+
+        Product updatedProduct = productRepository.save(product);
+
+        // Remove a imagem anterior após salvar a nova.
+        if (oldImageUrl != null) {
+            productImageService.delete(oldImageUrl);
+        }
+
+        return toDTO(updatedProduct);
+    }
+
+    @Transactional
+    public ProductResponseDTO deleteImage(Long productId) {
+
+        Product product = getProduct(productId);
+
+        String imageUrl = product.getImageUrl();
+
+        if (imageUrl == null) {
+            throw new ResourceNotFoundException(
+                    "Este produto não possui imagem."
+            );
+        }
+
+        product.setImageUrl(null);
+
+        Product updatedProduct = productRepository.save(product);
+
+        productImageService.delete(imageUrl);
+
+        return toDTO(updatedProduct);
+    }
+	
     @Transactional(readOnly = true)
     public Page<ProductResponseDTO> filter(
             String name,
