@@ -10,5 +10,6 @@ public record ProductResponseDTO(
     BigDecimal price,
     Integer stockQuantity,
     CategoryResponseDTO category,
-    LocalDateTime createdAt
+    LocalDateTime createdAt,
+    String imageUrl
 ) {}
