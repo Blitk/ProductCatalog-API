@@ -52,6 +52,18 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(InvalidImageException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidImage(
+            InvalidImageException exception) {
+
+        return ResponseEntity.badRequest().body(
+             Map.of(
+                  "status", 400,
+                  "error", "Bad Request",
+                  "message", exception.getMessage()
+             )
+        );
+   }
     
    @ExceptionHandler(InvalidFilterException.class)
    public ResponseEntity<Map<String, Object>> handleInvalidFilter(
