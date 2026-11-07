@@ -3,7 +3,10 @@ package com.productcatalog.controller;
 import com.productcatalog.dto.ProductRequestDTO;
 import com.productcatalog.dto.ProductResponseDTO;
 import com.productcatalog.service.ProductService;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -30,8 +33,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductResponseDTO> findAll() {
-        return productService.findAll();
+    public Page<ProductResponseDTO> findAll(
+            @PageableDefault(
+                 size = 10,
+                 sort = "id",
+                 direction = Sort.Direction.ASC
+            ) Pageable pageable) {
+
+        return productService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
@@ -54,16 +63,19 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<ProductResponseDTO> search(
-            @RequestParam String name) {
+    public Page<ProductResponseDTO> search(
+            @RequestParam String name,
+            Pageable pageable) {
 
-        return productService.searchByName(name);
+        return productService.searchByName(name, pageable);
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<ProductResponseDTO> findByCategory(
-            @PathVariable Long categoryId) {
+    public Page<ProductResponseDTO> findByCategory(
+            @PathVariable Long categoryId,
+            Pageable pageable) {
 
-        return productService.findByCategory(categoryId);
+         return productService.findByCategory(categoryId, pageable);
+        
     }
 }
