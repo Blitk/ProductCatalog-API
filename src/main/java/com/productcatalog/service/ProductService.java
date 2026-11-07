@@ -4,7 +4,8 @@ import com.productcatalog.dto.*;
 import com.productcatalog.exception.*;
 import com.productcatalog.model.*;
 import com.productcatalog.repository.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,36 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional(readOnly = true)
+    public Page<ProductResponseDTO> findAll(Pageable pageable) {
+
+         return productRepository.findAll(pageable)
+                 .map(this::toDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductResponseDTO> findByCategory(
+            Long categoryId,
+            Pageable pageable) {
+
+         getCategory(categoryId);
+
+         return productRepository
+                 .findByCategoryId(categoryId, pageable)
+                 .map(this::toDTO);
+    }
+
+    
+    @Transactional(readOnly = true)
+    public Page<ProductResponseDTO> searchByName(
+            String name,
+            Pageable pageable) {
+
+         return productRepository
+                 .findByNameContainingIgnoreCase(name, pageable)
+                 .map(this::toDTO);
+    }
+    
     @Transactional
     public ProductResponseDTO create(ProductRequestDTO dto) {
 
