@@ -6,6 +6,8 @@ O projeto implementa operações CRUD, filtros dinâmicos, paginação, validaç
 
 O objetivo é desenvolver uma API organizada, testável e de fácil execução, aplicando conceitos fundamentais de desenvolvimento Backend.
 
+[Repositório do Frontend](https://github.com/Blitk/ProductCatalog-Frontend)
+
 ⸻
 
 ## Tecnologias
