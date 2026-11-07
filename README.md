@@ -111,12 +111,15 @@ O banco de dados possui duas entidades principais.
 
 *Category*
 
+```
 id	- Long
 name - String
 description	- String
+```
 
 *Product*
 
+```
 id - Long
 name - String
 description - String
@@ -124,8 +127,9 @@ price	- BigDecimal
 stockQuantity	- Integer
 category	- Category
 createdAt	- LocalDateTime
+```
 
-Um produto pertence a uma categoria por meio de um relacionamento Many-to-One.
+Um produto pertence a uma categoria por meio de um relacionamento *Many-to-One*.
 
 ⸻
 
