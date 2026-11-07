@@ -270,7 +270,8 @@ public class ProductService {
                 product.getPrice(),
                 product.getStockQuantity(),
                 categoryDTO,
-                product.getCreatedAt()
+                product.getCreatedAt(),
+			    product.getImageUrl()
         );
     }
 }
