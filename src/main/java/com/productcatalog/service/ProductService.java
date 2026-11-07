@@ -12,6 +12,7 @@ import com.productcatalog.specification.ProductSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import java.math.BigDecimal;
 import java.util.List;
+import com.productcatalog.exception.InvalidFilterException;
 
 @Service
 public class ProductService {
@@ -37,6 +38,24 @@ public class ProductService {
             Integer maxStock,
             Pageable pageable) {
 
+     
+		validateFilters(
+
+            categoryId,
+            minPrice,
+            maxPrice,
+            minStock,
+            maxStock
+        );
+
+        if (categoryId != null && !categoryRepository.existsById(categoryId)) {
+
+             throw new ResourceNotFoundException(
+
+                     "Categoria não encontrada: " + categoryId
+             );
+        }
+		
         Specification<Product> specification =
                 Specification.where(ProductSpecification.nameContains(name))
                         .and(ProductSpecification.hasCategory(categoryId))
@@ -45,8 +64,8 @@ public class ProductService {
                         .and(ProductSpecification.stockGreaterThanOrEqual(minStock))
                         .and(ProductSpecification.stockLessThanOrEqual(maxStock));
 
-                return productRepository.findAll(specification, pageable)
-                        .map(this::toDTO);
+        return productRepository.findAll(specification, pageable)
+                .map(this::toDTO);
     }
 
 
@@ -158,6 +177,61 @@ public class ProductService {
                 .toList();
     }
 
+    
+   private void validateFilters(
+           Long categoryId,
+           BigDecimal minPrice,
+           BigDecimal maxPrice,
+           Integer minStock,
+           Integer maxStock) {
+
+        if (categoryId != null && categoryId <= 0) {
+            throw new InvalidFilterException(
+                    "O ID da categoria deve ser positivo."
+            );
+        }
+
+        if (minPrice != null && minPrice.compareTo(BigDecimal.ZERO) < 0) {
+             throw new InvalidFilterException(
+                     "O preço mínimo não pode ser negativo."
+             );
+        }
+
+        if (maxPrice != null && maxPrice.compareTo(BigDecimal.ZERO) < 0) {
+             throw new InvalidFilterException(
+                     "O preço máximo não pode ser negativo."
+             );
+         }
+
+         if (minPrice != null && maxPrice != null
+                 && minPrice.compareTo(maxPrice) > 0) {
+             throw new InvalidFilterException(
+                     "O preço mínimo não pode ser maior que o preço máximo."
+             );
+         }
+
+        if (minStock != null && minStock < 0) {
+             throw new InvalidFilterException(
+                     "O estoque mínimo não pode ser negativo."
+             );
+        }
+
+        if (maxStock != null && maxStock < 0) {
+             throw new InvalidFilterException(
+                     "O estoque máximo não pode ser negativo."
+             );
+        }
+
+        if (minStock != null && maxStock != null
+                 && minStock > maxStock) {
+             throw new InvalidFilterException(
+                     "O estoque mínimo não pode ser maior que o estoque máximo."
+             );
+        }
+    }
+
+
+    
     private Product getProduct(Long id) {
 
         return productRepository.findById(id)
