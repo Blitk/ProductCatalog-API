@@ -1,0 +1,8 @@
+
+.git
+.idea
+.vscode
+*.iml
+src/test
+target/*
+!target/product-catalog-0.0.1-SNAPSHOT.jar
