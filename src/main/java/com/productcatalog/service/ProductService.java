@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.productcatalog.specification.ProductSpecification;
+import org.springframework.data.jpa.domain.Specification;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -24,6 +26,31 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
+    
+    @Transactional(readOnly = true)
+    public Page<ProductResponseDTO> filter(
+            String name,
+            Long categoryId,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            Integer minStock,
+            Integer maxStock,
+            Pageable pageable) {
+
+        Specification<Product> specification =
+                Specification.where(ProductSpecification.nameContains(name))
+                        .and(ProductSpecification.hasCategory(categoryId))
+                        .and(ProductSpecification.priceGreaterThanOrEqual(minPrice))
+                        .and(ProductSpecification.priceLessThanOrEqual(maxPrice))
+                        .and(ProductSpecification.stockGreaterThanOrEqual(minStock))
+                        .and(ProductSpecification.stockLessThanOrEqual(maxStock));
+
+                return productRepository.findAll(specification, pageable)
+                        .map(this::toDTO);
+    }
+
+
+    
     @Transactional(readOnly = true)
     public Page<ProductResponseDTO> findAll(Pageable pageable) {
 
