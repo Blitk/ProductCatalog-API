@@ -1,4 +1,4 @@
-#ProductCatalog API
+# ProductCatalog API
 
 API REST para gerenciamento de produtos e categorias, desenvolvida com Java 21 e Spring Boot.
 
@@ -8,7 +8,7 @@ O objetivo é desenvolver uma API organizada, testável e de fácil execução, 
 
 ⸻
 
-##Tecnologias
+## Tecnologias
 
 * Java 21
 * Spring Boot 3.5.7
@@ -22,14 +22,13 @@ O objetivo é desenvolver uma API organizada, testável e de fácil execução, 
 * Mockito
 * MockMvc
 * Testcontainers
-* JaCoCo
 * Docker
 * Docker Compose
 * Swagger / OpenAPI
 
 ⸻
 
-##Funcionalidades
+## Funcionalidades
 
 *Produtos*
 
@@ -63,7 +62,7 @@ O objetivo é desenvolver uma API organizada, testável e de fácil execução, 
 
 ⸻
 
-##Arquitetura
+## Arquitetura
 
 O projeto utiliza uma arquitetura em camadas (Layered Architecture), separando as responsabilidades da aplicação.
 
@@ -106,33 +105,31 @@ com.productcatalog
 
 ⸻
 
-##Modelo de dados
+## Modelo de dados
 
 O banco de dados possui duas entidades principais.
 
-Category
+*Category*
 
-Campo	Tipo
-id	Long
-name	String
-description	String
+id	- Long
+name - String
+description	- String
 
-Product
+*Product*
 
-Campo	Tipo
-id	Long
-name	String
-description	String
-price	BigDecimal
-stockQuantity	Integer
-category	Category
-createdAt	LocalDateTime
+id - Long
+name - String
+description - String
+price	- BigDecimal
+stockQuantity	- Integer
+category	- Category
+createdAt	- LocalDateTime
 
 Um produto pertence a uma categoria por meio de um relacionamento Many-to-One.
 
 ⸻
 
-##Executando localmente
+## Executando localmente
 
 *Pré-requisitos*
 
@@ -142,17 +139,20 @@ Um produto pertence a uma categoria por meio de um relacionamento Many-to-One.
 
 1. Clone o repositório
 
-git clone https://github.com/SEU_USUARIO/ProductCatalog.git
+```
+git clone https://github.com/blitk/ProductCatalog.git
 cd ProductCatalog
+```
 
-Substitua SEU_USUARIO pelo seu usuário do GitHub.
 
 2. Configure o PostgreSQL
 
 Crie o usuário e o banco de dados:
 
+```
 CREATE USER productuser WITH PASSWORD 'product123';
 CREATE DATABASE productcatalog OWNER productuser;
+```
 
 As credenciais acima são destinadas exclusivamente ao ambiente local de desenvolvimento.
 
@@ -160,16 +160,20 @@ As credenciais acima são destinadas exclusivamente ao ambiente local de desenvo
 
 A aplicação utiliza as seguintes variáveis:
 
+```
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/productcatalog
 SPRING_DATASOURCE_USERNAME=productuser
 SPRING_DATASOURCE_PASSWORD=product123
+```
 
 Também é possível utilizar os valores padrão definidos em application.properties, conforme a configuração local do projeto.
 
 4. Execute a aplicação
 
+```
 mvn clean install
 mvn spring-boot:run
+```
 
 A API estará disponível em:
 
@@ -177,7 +181,7 @@ http://localhost:8080
 
 ⸻
 
-##Executando com Docker
+## Executando com Docker
 
 O projeto também disponibiliza Dockerfile e Docker Compose para facilitar a inicialização da aplicação e do PostgreSQL em containers.
 
@@ -188,13 +192,17 @@ O projeto também disponibiliza Dockerfile e Docker Compose para facilitar a ini
 
 1. Construa o projeto
 
+```
 mvn clean package -DskipTests
+```
 
 2. Inicie os containers
-
+   
+```
 docker compose up --build -d
+```
 
-O Docker Compose será responsável por:
+*O Docker Compose será responsável por:*
 
 * Criar o container do PostgreSQL.
 * Criar o banco de dados productcatalog.
@@ -205,25 +213,33 @@ O Docker Compose será responsável por:
 
 3. Verifique os containers
 
+```
 docker compose ps
+```
 
 4. Consulte os logs
 
+```
 docker compose logs -f app
+```
 
 5. Encerre os containers
 
+```
 docker compose down
+```
 
 Para remover também o volume do banco de dados:
 
+```
 docker compose down -v
+```
 
 Atenção: o comando docker compose down -v remove os dados persistidos no volume do PostgreSQL.
 
 ⸻
 
-##Endpoints
+## Endpoints
 
 Base URL:
 
@@ -231,7 +247,7 @@ http://localhost:8080
 
 *Produtos*
 
-Método	Endpoint	Descrição
+```
 POST	/api/products	Cadastrar produto
 GET	/api/products	Listar produtos
 GET	/api/products/{id}	Buscar produto por ID
@@ -240,19 +256,19 @@ DELETE	/api/products/{id}	Excluir produto
 GET	/api/products/search	Pesquisar por nome
 GET	/api/products/category/{categoryId}	Filtrar por categoria
 GET	/api/products/filter	Aplicar filtros combinados
-
+```
 *Categorias*
 
-Método	Endpoint	Descrição
+```
 POST	/api/categories	Cadastrar categoria
 GET	/api/categories	Listar categorias
 GET	/api/categories/{id}	Buscar categoria por ID
 PUT	/api/categories/{id}	Atualizar categoria
 DELETE	/api/categories/{id}	Excluir categoria
-
+```
 ⸻
 
-##Exemplos de requisições
+## Exemplos de requisições
 
 *Cadastrar categoria*
 
@@ -301,7 +317,7 @@ Os filtros são opcionais e podem ser combinados na mesma requisição.
 
 ⸻
 
-##Documentação da API
+## Documentação da API
 
 O projeto utiliza Swagger / OpenAPI para disponibilizar documentação interativa dos endpoints.
 
@@ -317,10 +333,11 @@ http://localhost:8080/v3/api-docs
 
 ⸻
 
-##Testes automatizados
+## Testes automatizados
 
 Os testes são organizados de acordo com as camadas da aplicação.
 
+```
 src/test/java/com/productcatalog
 │
 ├── controller/
@@ -332,34 +349,34 @@ src/test/java/com/productcatalog
 │
 └── repository/
     └── ProductRepositoryTest.java
-
-##Ferramentas utilizadas
+```
+*Ferramentas utilizadas*
 
 * JUnit 5: estrutura dos testes.
 * Mockito: simulação de dependências.
 * MockMvc: testes dos endpoints HTTP.
 * Testcontainers: testes de integração com PostgreSQL em container.
-* JaCoCo: análise de cobertura de código.
 
 Executar os testes
 
+```
 mvn clean test
+
+```
 
 Executar a verificação completa
 
+```
 mvn clean verify
+```
 
 Relatório de cobertura
-
-Após executar o verify, o relatório HTML do JaCoCo estará disponível em:
-
-target/site/jacoco/index.html
 
 Os testes de integração com Testcontainers precisam de um ambiente Docker em execução.
 
 ⸻
 
-##Aprendizados e conceitos aplicados
+## Aprendizados e conceitos aplicados
 
 Durante o desenvolvimento deste projeto, são trabalhados conceitos importantes de desenvolvimento Backend com Java e Spring Boot:
 
