@@ -52,6 +52,22 @@ public class GlobalExceptionHandler {
         );
     }
 
+    
+   @ExceptionHandler(InvalidFilterException.class)
+   public ResponseEntity<Map<String, Object>> handleInvalidFilter(
+            InvalidFilterException exception) {
+
+       Map<String, Object> body = Map.of(
+               "timestamp", LocalDateTime.now(),
+               "status", 400,
+               "error", "Bad Request",
+               "message", exception.getMessage()
+       );
+
+       return ResponseEntity.badRequest().body(body);
+   }
+
+
     private ResponseEntity<Map<String, Object>> buildResponse(
             HttpStatus status,
             String message) {
