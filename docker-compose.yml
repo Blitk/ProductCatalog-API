@@ -20,6 +20,8 @@ services:
   app:
     build: .
     container_name: productcatalog-api
+    volumes:
+      - product_images:/app/uploads/products
     ports:
       - "8080:8080"
     environment:
@@ -32,4 +34,5 @@ services:
 
 volumes:
   postgres_data:
+  product_images:
 
