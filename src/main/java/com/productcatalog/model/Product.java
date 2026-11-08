@@ -47,7 +47,7 @@ public class Product {
     }
 
     public String getImageUrl(){
-        return imageUrl();
+        return imageUrl;
     }
     
     public String getName() {

@@ -50,7 +50,8 @@ class ProductControllerTest {
                 new BigDecimal("150.00"),
                 10,
                 null,
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                "teste.png"
         );
     }
 

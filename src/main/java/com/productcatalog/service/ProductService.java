@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.productcatalog.specification.ProductSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import java.math.BigDecimal;
@@ -202,26 +204,7 @@ public class ProductService {
         productRepository.delete(product);
     }
 
-    @Transactional(readOnly = true)
-    public List<ProductResponseDTO> searchByName(String name) {
 
-        return productRepository
-                .findByNameContainingIgnoreCase(name)
-                .stream()
-                .map(this::toDTO)
-                .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public List<ProductResponseDTO> findByCategory(Long categoryId) {
-
-        getCategory(categoryId);
-
-        return productRepository.findByCategoryId(categoryId)
-                .stream()
-                .map(this::toDTO)
-                .toList();
-    }
 
     
    private void validateFilters(
@@ -320,4 +303,8 @@ public class ProductService {
 			    product.getImageUrl()
         );
     }
+
+	private <U> U toDTO(ProductResponseDTO productresponsedto1) {
+		return null;
+	}
 }
